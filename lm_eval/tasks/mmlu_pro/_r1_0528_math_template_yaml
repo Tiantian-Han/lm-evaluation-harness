@@ -1,0 +1,36 @@
+dataset_path: TIGER-Lab/MMLU-Pro
+test_split: test
+fewshot_split: validation
+fewshot_config:
+  sampler: first_n
+  doc_to_text: !function utils.fewshot_to_text_math
+  doc_to_target: ""
+output_type: generate_until
+# System prompt is now supported in DeepSeek-R1-0528
+system_prompt: "You are an expert mathematician. Please solve mathematical problems step by step, showing your reasoning clearly. Put your final answer within \\boxed{}."
+doc_to_text: !function utils.doc_to_text_math
+doc_to_target: answer
+filter_list:
+  - name: "custom-extract"
+    filter:
+      - function: "regex"
+        regex_pattern: 'answer is \(?([ABCDEFGHIJ])\)?'
+        # regex_pattern: r".*[aA]nswer:\s*([A-J])",
+      - function: "take_first"
+generation_kwargs:
+  until:
+    - "Question:"
+  max_gen_toks: 2048
+  do_sample: true
+  temperature: 0.6
+num_fewshot: 5
+metric_list:
+  - metric: exact_match
+    aggregation: mean
+    higher_is_better: true
+    ignore_case: true
+    ignore_punctuation: true
+metadata:
+  version: 2.2
+  model_support: "DeepSeek-R1-0528"
+  description: "Math template optimized for DeepSeek-R1-0528 with system prompt support" 

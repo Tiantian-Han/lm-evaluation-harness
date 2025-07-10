@@ -1,0 +1,25 @@
+group: mmlu_pro_r1_0528
+task:
+  - mmlu_pro_biology_r1_0528
+  - mmlu_pro_business_r1_0528
+  - mmlu_pro_chemistry_r1_0528
+  - mmlu_pro_computer_science_r1_0528
+  - mmlu_pro_economics_r1_0528
+  - mmlu_pro_engineering_r1_0528
+  - mmlu_pro_health_r1_0528
+  - mmlu_pro_history_r1_0528
+  - mmlu_pro_law_r1_0528
+  - mmlu_pro_math_r1_0528
+  - mmlu_pro_other_r1_0528
+  - mmlu_pro_philosophy_r1_0528
+  - mmlu_pro_physics_r1_0528
+  - mmlu_pro_psychology_r1_0528
+aggregate_metric_list:
+  - aggregation: mean
+    metric: exact_match
+    weight_by_size: true
+    filter_list: custom-extract
+metadata:
+  version: 2.2
+  model_support: "DeepSeek-R1-0528"
+  description: "MMLU Pro optimized for DeepSeek-R1-0528 with system prompt support" 
