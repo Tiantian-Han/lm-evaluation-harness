@@ -1,10 +1,11 @@
 from functools import partial
+import os
 
 
 choices = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"]
 
 
-def format_cot_example(example, including_answer=True):
+def format_cot_example(example, including_answer=True, is_math=False, force_thinking=False):
     prompt = "Question:\n"
     question = example["question"]
     options = example["options"]
@@ -22,13 +23,34 @@ def format_cot_example(example, including_answer=True):
         )
         prompt += cot_content + "\n\n"
     else:
-        prompt += "Answer: Let's think step by step."
+        if is_math:
+            prompt += "Answer: Please reason step by step, and put your final answer within \\boxed{}. Let's think step by step."
+        else:
+            prompt += "Answer: Let's think step by step."
+        
+        # Force thinking pattern for DeepSeek-R1 models
+        if force_thinking:
+            prompt += "\n<think>\n"
 
     return prompt
 
 
-doc_to_text = partial(format_cot_example, including_answer=False)
-fewshot_to_text = partial(format_cot_example, including_answer=True)
+def check_if_deepseek_r1_model():
+    """Check if the model being used is a DeepSeek-R1 series model"""
+    # This can be enhanced to check model name/path from environment or config
+    model_name = os.environ.get('MODEL_NAME', '').lower()
+    return 'deepseek-r1' in model_name or 'deepseek_r1' in model_name
+
+
+# Check if we should force thinking pattern
+force_thinking = check_if_deepseek_r1_model()
+
+doc_to_text = partial(format_cot_example, including_answer=False, force_thinking=force_thinking)
+fewshot_to_text = partial(format_cot_example, including_answer=True, force_thinking=False)
+
+# Math-specific versions
+doc_to_text_math = partial(format_cot_example, including_answer=False, is_math=True, force_thinking=force_thinking)
+fewshot_to_text_math = partial(format_cot_example, including_answer=True, is_math=True, force_thinking=False)
 
 
 def process_docs(dataset, subject):
