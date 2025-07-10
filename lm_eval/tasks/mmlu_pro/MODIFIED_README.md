@@ -2,32 +2,44 @@
 
 本文档说明了根据要求对 MMLU Pro 评估逻辑所做的修改。
 
+## 修改依据
+
+本次修改基于 **DeepSeek-R1 官方使用建议**：
+- 参考链接：[DeepSeek-R1 Usage Recommendations](https://github.com/deepseek-ai/DeepSeek-R1?tab=readme-ov-file#usage-recommendations)
+- 修改目的：优化 MMLU Pro 评估以更好地支持 DeepSeek-R1 系列模型及其他大语言模型
+- 实现了官方建议的温度设置、提示格式、数学问题处理等关键改进
+
 ## 主要修改
 
 ### 1. 温度设置（0.5-0.7 范围，推荐 0.6）
 - 在 `_default_template_yaml` 和 `_math_template_yaml` 中设置 `temperature: 0.6`
 - 启用了采样 `do_sample: true`
 - 这有助于防止无限重复或不连贯的输出
+- **依据**：DeepSeek-R1 官方建议在 0.5-0.7 范围内设置温度，推荐 0.6
 
 ### 2. 避免系统提示
 - 所有指令都包含在用户提示中
 - 没有使用系统级别的提示设置
 - 指令直接嵌入在问题格式化函数中
+- **依据**：官方建议避免添加系统提示，所有指令应包含在用户提示中
 
 ### 3. 数学问题的特殊处理
 - 创建了专门的数学模板 `_math_template_yaml`
 - 为数学问题添加了特殊指令："Please reason step by step, and put your final answer within \\boxed{}."
 - 使用 `doc_to_text_math` 和 `fewshot_to_text_math` 函数处理数学任务
+- **依据**：官方建议对数学问题添加逐步推理指令和 `\boxed{}` 格式要求
 
 ### 4. 多次测试支持
 - 创建了 `multi_run_evaluator.py` 脚本
 - 支持运行多次评估并计算平均结果
 - 提供标准差和置信区间信息
+- **依据**：官方建议进行多次测试并平均结果以获得更可靠的性能评估
 
 ### 5. DeepSeek-R1 系列模型支持
 - 自动检测 DeepSeek-R1 模型（通过环境变量 `MODEL_NAME`）
 - 强制模型以 `<think>\n` 开始响应
 - 确保模型进行充分的推理
+- **依据**：官方观察到 DeepSeek-R1 系列模型在某些查询中会绕过思维模式，建议强制模型以 `<think>\n` 开始响应
 
 ## 使用方法
 
@@ -89,4 +101,10 @@ python lm_eval/tasks/mmlu_pro/multi_run_evaluator.py --model "hf --model_args pr
 mmlu_pro_math: 0.7234 ± 0.0156 (n=3)
 mmlu_pro_physics: 0.6891 ± 0.0203 (n=3)
 mmlu_pro: 0.6945 ± 0.0123 (n=3)
-``` 
+```
+
+## 参考资料
+
+- [DeepSeek-R1 GitHub Repository](https://github.com/deepseek-ai/DeepSeek-R1)
+- [DeepSeek-R1 Usage Recommendations](https://github.com/deepseek-ai/DeepSeek-R1?tab=readme-ov-file#usage-recommendations)
+- [lm-evaluation-harness Documentation](https://github.com/EleutherAI/lm-evaluation-harness) 
