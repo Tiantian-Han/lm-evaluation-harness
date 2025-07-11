@@ -85,6 +85,8 @@ class TaskConfig(dict):
     target_delimiter: str = " "
     fewshot_delimiter: str = "\n\n"
     fewshot_config: Optional[dict] = None
+    # system prompt support for models like DeepSeek-R1-0528
+    system_prompt: Optional[str] = None
     # runtime configuration options
     num_fewshot: Optional[int] = None
     # scoring options
@@ -1127,7 +1129,10 @@ class ConfigurableTask(Task):
             description = utils.apply_template(self.config.description, doc)
 
         # create system prompt based on the provided system instruction and description
-        if system_instruction is not None and description:
+        # Priority: config.system_prompt > system_instruction > description
+        if self.config.system_prompt is not None:
+            system_prompt = self.config.system_prompt
+        elif system_instruction is not None and description:
             system_prompt = (
                 f"{system_instruction}{self.sampler.fewshot_delimiter}{description}"
             )

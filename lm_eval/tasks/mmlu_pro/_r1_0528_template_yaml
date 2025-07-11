@@ -6,6 +6,8 @@ fewshot_config:
   doc_to_text: !function utils.fewshot_to_text
   doc_to_target: ""
 output_type: generate_until
+# System prompt support for DeepSeek-R1-0528
+system_prompt: "You are an expert in multiple-choice question answering. Please analyze each question carefully and provide your reasoning step by step."
 doc_to_text: !function utils.doc_to_text
 doc_to_target: answer
 filter_list:
@@ -31,4 +33,4 @@ metric_list:
 metadata:
   version: 2.2
   model_support: "DeepSeek-R1-0528"
-  description: "Template optimized for DeepSeek-R1-0528" 
+  description: "Template optimized for DeepSeek-R1-0528 with system prompt support" 
