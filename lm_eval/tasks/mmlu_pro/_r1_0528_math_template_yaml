@@ -6,8 +6,6 @@ fewshot_config:
   doc_to_text: !function utils.fewshot_to_text_math
   doc_to_target: ""
 output_type: generate_until
-# System prompt is now supported in DeepSeek-R1-0528
-system_prompt: "You are an expert mathematician. Please solve mathematical problems step by step, showing your reasoning clearly. Put your final answer within \\boxed{}."
 doc_to_text: !function utils.doc_to_text_math
 doc_to_target: answer
 filter_list:
@@ -33,4 +31,4 @@ metric_list:
 metadata:
   version: 2.2
   model_support: "DeepSeek-R1-0528"
-  description: "Math template optimized for DeepSeek-R1-0528 with system prompt support" 
+  description: "Math template optimized for DeepSeek-R1-0528" 
