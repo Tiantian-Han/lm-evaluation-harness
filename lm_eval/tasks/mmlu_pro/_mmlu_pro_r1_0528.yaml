@@ -15,10 +15,9 @@ task:
   - mmlu_pro_physics_r1_0528
   - mmlu_pro_psychology_r1_0528
 aggregate_metric_list:
-  - aggregation: mean
-    metric: exact_match
+  - aggregation: "mean"
+    metric: "exact_match"
     weight_by_size: true
-    filter_list: custom-extract
 metadata:
   version: 2.2
   model_support: "DeepSeek-R1-0528"

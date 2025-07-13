@@ -3,3 +3,4 @@ include: "_r1_0528_math_template_yaml"
 task: "mmlu_pro_math_r1_0528"
 task_alias: "math_r1_0528"
 process_docs: !function utils.process_math 
+doc_to_text: !function utils.doc_to_text_math 
