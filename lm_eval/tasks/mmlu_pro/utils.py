@@ -37,10 +37,11 @@ def format_cot_example(example, including_answer=True, is_math=False, force_thin
         if force_thinking:
             prompt += "Answer: <think>\n"
         else:
-            if is_math:
-                prompt += "Answer: Please reason step by step, and put your final answer within \\boxed{}. Let's think step by step."
-            else:
-                prompt += "Answer: Let's think step by step."
+            # if is_math:
+            #     prompt += "Answer: Please reason step by step, and put your final answer within \\boxed{}. Let's think step by step."
+            # else:
+            #     prompt += "Answer: Let's think step by step."
+            prompt += "Answer: Let's think step by step."
 
     return prompt
 
